@@ -1,3 +1,4 @@
+;{material_print_temperature} {material_bed_temperature}
 G21 ;metric values
 G90 ;absolute positioning
 M82 ;set extruder to absolute mode
@@ -5,7 +6,21 @@ M107 ;start with the fan off
 G28 X0 Y0 ;move X/Y to min endstops
 G28 Z0 ;move Z to min endstops
 G29 ;9 points calibrate
-G1 F200 E3 ;extrude 3mm of feed stock
+
+; draw a line back and forth at left side ##########################
+G1 X0 Y0 F2000 ;move to X0 Y0
+M109 S{material_print_temperature} T0 ;wait for nozzle to reach temp
+G92 E0 ;Reset Extruder
+G1 Z2.0 F3000 ;Move Z Axis up
+G1 X10.1 Y20 Z0.28 F5000.0 ;Move to start position
+G1 X10.1 Y180.0 Z0.28 F1500.0 E15 ;Draw the first line
+G1 X10.4 Y180.0 Z0.28 F5000.0 ;Move to side a little
+G1 X10.4 Y20 Z0.28 F1500.0 E30 ;Draw the second line
+G92 E0 ;Reset Extruder
+G1 Z2.0 F3000 ;Move Z Axis up
+; ###################################################################
+
 G92 E0 ;zero the extruded length again
 G1 F9000
+;Put printing message on LCD screen
 M117 Printing...
